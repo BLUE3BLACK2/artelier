@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getPaintings } from "../services/paintingService";
@@ -33,43 +34,70 @@ export default function ProductGallery({ onAddToCart }) {
 
   return (
     <section className="gallery-section" id="gallery">
-      <div className="section-heading">
-        <div>
-          <p className="eyebrow">CURATED FOR YOU</p>
-          <h2>Explore the collection</h2>
-        </div>
-
-        <p>Artworks to make your space feel like yours.</p>
+      <div className="gallery-topline">
+        <span>THE ARTELIER COLLECTION</span>
+        <span>01 — CURATED ARTWORKS</span>
       </div>
 
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Search artwork or artist..."
-        value={search}
-        onChange={(event) => {
-          setSearch(event.target.value);
-          setCurrentPage(1);
-        }}
-      />
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">DISCOVER SOMETHING BEAUTIFUL</p>
+          <h2>
+            Art worth
+            <br />
+            <span>living with.</span>
+          </h2>
+        </div>
 
-      <div className="category-filters">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={
-              activeCategory === category
-                ? "filter-button active"
-                : "filter-button"
-            }
-            onClick={() => {
-              setActiveCategory(category);
+        <p className="gallery-description">
+          A thoughtfully selected collection of artworks
+          chosen to bring emotion, character, and inspiration
+          into your everyday surroundings.
+        </p>
+      </div>
+
+      <div className="gallery-toolbar">
+        <div className="category-filters">
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={
+                activeCategory === category
+                  ? "filter-button active"
+                  : "filter-button"
+              }
+              onClick={() => {
+                setActiveCategory(category);
+                setCurrentPage(1);
+              }}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <div className="gallery-search">
+          <span>⌕</span>
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Search artworks..."
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
               setCurrentPage(1);
             }}
-          >
-            {category}
-          </button>
-        ))}
+          />
+        </div>
+      </div>
+
+      <div className="gallery-result-info">
+        <span>
+          {isLoading
+            ? "Discovering artworks..."
+            : `${paintings.length} artworks displayed`}
+        </span>
+        <span>COLLECTION / {String(currentPage).padStart(2, "0")}</span>
       </div>
 
       {isLoading ? (
@@ -81,7 +109,7 @@ export default function ProductGallery({ onAddToCart }) {
       ) : paintings.length > 0 ? (
         <>
           <div className="product-grid">
-            {paintings.map((painting) => (
+            {paintings.map((painting, index) => (
               <ProductCard
                 key={painting.id}
                 painting={painting}
@@ -97,11 +125,12 @@ export default function ProductGallery({ onAddToCart }) {
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((page) => page - 1)}
               >
-                Previous
+                ← Previous
               </button>
 
               <span>
-                Page {currentPage} of {lastPage}
+                {String(currentPage).padStart(2, "0")} /{" "}
+                {String(lastPage).padStart(2, "0")}
               </span>
 
               <button
@@ -109,7 +138,7 @@ export default function ProductGallery({ onAddToCart }) {
                 disabled={currentPage === lastPage}
                 onClick={() => setCurrentPage((page) => page + 1)}
               >
-                Next
+                Next →
               </button>
             </div>
           )}

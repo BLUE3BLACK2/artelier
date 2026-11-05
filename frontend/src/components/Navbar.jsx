@@ -1,11 +1,12 @@
-
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Navbar({ onOpenCart }) {
   const { cartCount } = useCart();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -28,6 +29,15 @@ export default function Navbar({ onOpenCart }) {
       </nav>
 
       <div className="nav-actions">
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
+          {theme === "dark" ? "☀" : "☾"}
+        </button>
+
         {user ? (
           <>
             {user.role === "admin" && (
@@ -37,7 +47,11 @@ export default function Navbar({ onOpenCart }) {
             )}
 
             <span className="user-name">{user.name}</span>
-            <button className="auth-nav-button" onClick={handleLogout}>
+
+            <button
+              className="auth-nav-button"
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </>
@@ -46,6 +60,7 @@ export default function Navbar({ onOpenCart }) {
             <Link to="/login" className="auth-nav-link">
               Login
             </Link>
+
             <Link to="/register" className="auth-nav-button">
               Register
             </Link>
@@ -53,7 +68,7 @@ export default function Navbar({ onOpenCart }) {
         )}
 
         <button className="cart-button" onClick={onOpenCart}>
-          Cart ({cartCount})
+          Cart <span>{cartCount}</span>
         </button>
       </div>
     </header>

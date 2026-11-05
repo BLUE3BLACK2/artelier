@@ -1,4 +1,4 @@
-
+import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -48,6 +48,8 @@ export default function Admin() {
   setEditingPainting(null);
   setIsFormOpen(false);
 };
+
+  const { theme, toggleTheme } = useTheme();
 
   const createMutation = useMutation({
     mutationFn: createPainting,
@@ -139,9 +141,22 @@ export default function Admin() {
   return (
     <main className="admin-page">
       <section className="admin-header">
-        <p className="eyebrow">ARTELIER MANAGEMENT</p>
-        <h1>Artwork Management</h1>
-        <p>Manage your artwork collection.</p>
+        <div className="admin-heading-row">
+          <div>
+            <p className="eyebrow">ARTELIER MANAGEMENT</p>
+            <h1>Artwork Management</h1>
+            <p>Manage your artwork collection.</p>
+          </div>
+
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
+            {theme === "dark" ? "☀" : "☾"}
+          </button>
+        </div>
       </section>
 
       <section className="admin-content">

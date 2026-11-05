@@ -5,6 +5,12 @@ export const getPaintings = async (params = {}) => {
   return response.data;
 };
 
+export const getPainting = async (id) => {
+  const response = await apiClient.get(`/paintings/${id}`);
+  return response.data;
+};
+
+
 export const createPainting = async (formData) => {
   const response = await apiClient.post("/paintings", formData);
   return response.data;
@@ -19,5 +25,18 @@ export const updatePainting = async (id, formData) => {
 
 export const deletePainting = async (id) => {
   const response = await apiClient.delete(`/paintings/${id}`);
+  return response.data;
+};
+
+export const getReviews = async (paintingId) => {
+  const response = await apiClient.get(`/paintings/${paintingId}/reviews`);
+  return response.data;
+};
+
+export const createReview = async (paintingId, reviewData) => {
+  const response = await apiClient.post(
+    `/paintings/${paintingId}/reviews`,
+    reviewData
+  );
   return response.data;
 };

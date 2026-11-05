@@ -10,7 +10,9 @@ class PaintingController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Painting::query();
+        $query = Painting::query()
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews');
 
         if ($request->filled('search')) {
             $search = $request->search;
